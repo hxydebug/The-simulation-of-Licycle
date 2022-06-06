@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/nlctest.dir/nlctest.cpp.o  -o nlctest libalglib_sdk.a 

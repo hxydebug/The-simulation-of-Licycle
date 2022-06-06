@@ -1,0 +1,2 @@
+/usr/bin/ar qc libleg_controller.a  CMakeFiles/leg_controller.dir/src/leg_controller.cpp.o
+/usr/bin/ranlib libleg_controller.a

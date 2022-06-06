@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="licycle_urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.176138967823864 -3.1448469658899E-05 0.0493286390275955"
+        rpy="0 0 0" />
+      <mass
+        value="10.9843680862098" />
+      <inertia
+        ixx="0.20845829467282"
+        ixy="4.87417750529226E-07"
+        ixz="-0.10345022007299"
+        iyy="0.490313978152622"
+        iyz="6.38246047221331E-06"
+        izz="0.332205011111699" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/base_link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/base_link.obj" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="steer_Link">
+    <inertial>
+      <origin
+        xyz="-0.00772445023610646 -4.06347309618525E-06 0.170071187046308"
+        rpy="0 0 0" />
+      <mass
+        value="2.90929469697915" />
+      <inertia
+        ixx="0.166478585318794"
+        ixy="7.54822820365753E-07"
+        ixz="0.0137835240979315"
+        iyy="0.133947479469498"
+        iyz="-4.88072820408843E-06"
+        izz="0.0407575204178957" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/steer_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/steer_Link.obj" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="s2b"
+    type="continuous">
+    <origin
+      xyz="0.376892705884582 0 0.0990761889907591"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="steer_Link" />
+    <axis
+      xyz="0.292371704722734 0 -0.956304755963036" />
+  </joint>
+  <link
+    name="front_tire_Link">
+    <inertial>
+      <origin
+        xyz="0 -3.81827141817153E-18 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="4.78353640373171" />
+      <inertia
+        ixx="0.0428888787906516"
+        ixy="-2.50498726080438E-19"
+        ixz="4.86674277655473E-19"
+        iyy="0.0811844917144548"
+        iyz="-3.1050453804399E-20"
+        izz="0.0428888787906516" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/front_tire_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/front_tire_Link.obj" />
+      </geometry>
+      <material name="">
+        <contact name="rubber"/>
+      </material>
+    </collision>
+  </link>
+  <joint
+    name="f2s"
+    type="continuous">
+    <origin
+      xyz="0.0730929261806841 0 -0.239076188990759"
+      rpy="0 0 0" />
+    <parent
+      link="steer_Link" />
+    <child
+      link="front_tire_Link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="back_tire_Link">
+    <inertial>
+      <origin
+        xyz="-5.57219919092301E-18 2.11814811896801E-18 0"
+        rpy="0 0 0" />
+      <mass
+        value="1.91948717391942" />
+      <inertia
+        ixx="0.0332271150038883"
+        ixy="4.78744467931346E-35"
+        ixz="3.31486848494006E-34"
+        iyy="0.0657402376013878"
+        iyz="-6.77084746073638E-35"
+        izz="0.0332271150038883" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/back_tire_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/back_tire_Link.obj" />
+      </geometry>
+      <material name="">
+        <contact name="rubber"/>
+      </material>
+    </collision>
+  </link>
+  <joint
+    name="b2b"
+    type="continuous">
+    <origin
+      xyz="-0.42 0 -0.145"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="back_tire_Link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="left_hip_Link">
+    <inertial>
+      <origin
+        xyz="-0.00555726704767262 -0.000547462402759297 5.80805118455263E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.5" />
+      <inertia
+        ixx="0.000"
+        ixy="0.000"
+        ixz="0.000"
+        iyy="0.000"
+        iyz="0.000"
+        izz="0.000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/left_hip_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/left_hip_Link.obj" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lh2b"
+    type="continuous">
+    <origin
+      xyz="-0.021500042783988 0.130249954372152 -0.0529999999999992"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_hip_Link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="left_thigh_Link">
+    <inertial>
+      <origin
+        xyz="0.00158568609737464 -0.0229276869821491 -0.00517798846697515"
+        rpy="0 0 0" />
+      <mass
+        value="0.65" />
+      <inertia
+        ixx="0.001"
+        ixy="0.000"
+        ixz="0.000"
+        iyy="0.001"
+        iyz="0.000"
+        izz="0.000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/left_thigh_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/left_thigh_Link.obj" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lt2lh"
+    type="continuous">
+    <origin
+      xyz="0 0.0755000295197774 0"
+      rpy="0 0 0" />
+    <parent
+      link="left_hip_Link" />
+    <child
+      link="left_thigh_Link" />
+    <axis
+      xyz="0 0.999999999999986 0" />
+  </joint>
+  <link
+    name="left_shank_Link">
+    <inertial>
+      <origin
+        xyz="3.34476791940541E-05 8.25605241187577E-05 -0.0867812066867556"
+        rpy="0 0 0" />
+      <mass
+        value="0.2" />
+      <inertia
+        ixx="0.002"
+        ixy="0.000"
+        ixz="0.000"
+        iyy="0.002"
+        iyz="0.000"
+        izz="0.000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/left_shank_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/left_shank_Link.obj" />
+      </geometry>
+      <material name="">
+        <contact name="rubber"/>
+      </material>
+    </collision>
+  </link>
+  <joint
+    name="ls2lt"
+    type="continuous">
+    <origin
+      xyz="0 0 -0.211499999999996"
+      rpy="0 0 0" />
+    <parent
+      link="left_thigh_Link" />
+    <child
+      link="left_shank_Link" />
+    <axis
+      xyz="0 0.999999999999982 0" />
+  </joint>
+  <link
+    name="right_hip_Link">
+    <inertial>
+      <origin
+        xyz="-0.00555726686360064 0.000547464277983689 -5.80712840014819E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.5" />
+      <inertia
+        ixx="0.000"
+        ixy="0.000"
+        ixz="0.000"
+        iyy="0.000"
+        iyz="0.000"
+        izz="0.000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/right_hip_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/right_hip_Link.obj" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rh2b"
+    type="continuous">
+    <origin
+      xyz="-0.0215000428683278 -0.130249986593791 -0.0529999999999996"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_hip_Link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="right_thigh_Link">
+    <inertial>
+      <origin
+        xyz="-0.00158568609737475 0.0229276869821492 -0.0051779884669752"
+        rpy="0 0 0" />
+      <mass
+        value="0.65" />
+      <inertia
+        ixx="0.001"
+        ixy="0.000"
+        ixz="0.000"
+        iyy="0.001"
+        iyz="0.000"
+        izz="0.000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/right_thigh_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/right_thigh_Link.obj" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rt2rh"
+    type="continuous">
+    <origin
+      xyz="0 -0.0755000295197776 0"
+      rpy="0 0 0" />
+    <parent
+      link="right_hip_Link" />
+    <child
+      link="right_thigh_Link" />
+    <axis
+      xyz="0 -0.999999999999986 0" />
+  </joint>
+  <link
+    name="right_shank_Link">
+    <inertial>
+      <origin
+        xyz="-3.3448E-05 -8.2561E-05 -0.086781"
+        rpy="0 0 0" />
+      <mass
+        value="0.2" />
+      <inertia
+        ixx="0.002"
+        ixy="0.000"
+        ixz="0.000"
+        iyy="0.002"
+        iyz="0.000"
+        izz="0.000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/right_shank_Link.obj" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="../meshes/right_shank_Link.obj" />
+      </geometry>
+      <material name="">
+        <contact name="rubber"/>
+      </material>
+    </collision>
+  </link>
+  <joint
+    name="rs2rt"
+    type="continuous">
+    <origin
+      xyz="0 0 -0.211499999999996"
+      rpy="0 0 0" />
+    <parent
+      link="right_thigh_Link" />
+    <child
+      link="right_shank_Link" />
+    <axis
+      xyz="0 -0.999999999999982 0" />
+  </joint>
+</robot>

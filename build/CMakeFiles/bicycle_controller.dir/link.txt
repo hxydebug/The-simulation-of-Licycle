@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbicycle_controller.a  CMakeFiles/bicycle_controller.dir/src/bicycle_controller.cpp.o
+/usr/bin/ranlib libbicycle_controller.a

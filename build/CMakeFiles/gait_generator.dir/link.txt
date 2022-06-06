@@ -1,0 +1,2 @@
+/usr/bin/ar qc libgait_generator.a  CMakeFiles/gait_generator.dir/src/gait_generator.cpp.o
+/usr/bin/ranlib libgait_generator.a

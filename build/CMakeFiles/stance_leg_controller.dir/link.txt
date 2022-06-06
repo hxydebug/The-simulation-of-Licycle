@@ -1,0 +1,2 @@
+/usr/bin/ar qc libstance_leg_controller.a  CMakeFiles/stance_leg_controller.dir/src/stance_leg_controller.cpp.o
+/usr/bin/ranlib libstance_leg_controller.a

@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/nlc.dir/nlctest.cpp.o  -o nlc  -L/usr/lib/x86_64-linux-gnu/libalglib.so -Wl,-rpath,/usr/lib/x86_64-linux-gnu/libalglib.so -lalglib 

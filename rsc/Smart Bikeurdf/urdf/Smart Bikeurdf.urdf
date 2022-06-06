@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="Smart Bikeurdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.072241 -0.00032924 0.065647"
+        rpy="0 0 0" />
+      <mass
+        value="26.501" />
+      <inertia
+        ixx="0.57828"
+        ixy="-0.00029846"
+        ixz="-0.37797"
+        iyy="1.3815"
+        iyz="-0.0010992"
+        izz="0.87984" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.94118 0 0.25098 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="steer_Link">
+    <inertial>
+      <origin
+        xyz="0.023404 -1.0543E-08 -0.13273"
+        rpy="0 0 0" />
+      <mass
+        value="0.18657" />
+      <inertia
+        ixx="0.0014577"
+        ixy="1.7697E-05"
+        ixz="0.00018885"
+        iyy="0.0011153"
+        iyz="3.1204E-06"
+        izz="0.00041999" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/steer_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.98824 1 0.31765 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/steer_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="steer2base"
+    type="continuous">
+    <origin
+      xyz="0.41186 0 0.12304"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="steer_Link" />
+    <axis
+      xyz="-0.17365 0 0.98481" />
+  </joint>
+  <link
+    name="front_tire_Link">
+    <inertial>
+      <origin
+        xyz="0.116091919240525 0.0593664678486205 5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="4.97972144336047" />
+      <inertia
+        ixx="0.0810473741653513"
+        ixy="1.49077798716757E-19"
+        ixz="-1.79977560632594E-17"
+        iyy="0.0810473741653513"
+        iyz="-3.07367080734904E-19"
+        izz="0.147017888395435" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/front_tire_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.92156862745098 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/front_tire_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="ft2steer"
+    type="continuous">
+    <origin
+      xyz="0.048144 0 -0.27304"
+      rpy="1.5625 0 0.046962" />
+    <parent
+      link="steer_Link" />
+    <child
+      link="front_tire_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="back_tire_Link">
+    <inertial>
+      <origin
+        xyz="-0.0632287535519862 -0.114034362987795 0"
+        rpy="0 0 0" />
+      <mass
+        value="4.97972144336046" />
+      <inertia
+        ixx="0.0810473741653513"
+        ixy="2.72592143085379E-18"
+        ixz="1.55476810243408E-20"
+        iyy="0.0810473741653513"
+        iyz="2.7935159130105E-19"
+        izz="0.147017888395435" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/back_tire_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.92156862745098 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/back_tire_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="bt2base"
+    type="continuous">
+    <origin
+      xyz="-0.32 0 -0.15"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="back_tire_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="left_hip_Link">
+    <inertial>
+      <origin
+        xyz="-0.0055572693631889 -0.000547462021164624 5.80578443676316E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.127394275254527" />
+      <inertia
+        ixx="5.65233830449628E-05"
+        ixy="1.16592738397563E-06"
+        ixz="-1.21707423162177E-07"
+        iyy="0.000106228884116206"
+        iyz="1.22498446950024E-08"
+        izz="5.83671022291643E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/left_hip_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/left_hip_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lh2base"
+    type="continuous">
+    <origin
+      xyz="0.0618 0.05 -0.037"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_hip_Link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="left_thigh_Link">
+    <inertial>
+      <origin
+        xyz="0.00158569560312904 -0.0229276842230721 -0.00517798749207499"
+        rpy="0 0 0" />
+      <mass
+        value="0.176621123439024" />
+      <inertia
+        ixx="8.87397408846469E-05"
+        ixy="-1.24465518698941E-06"
+        ixz="-1.22396707145579E-07"
+        iyy="0.00015439188836036"
+        iyz="1.97467514565933E-06"
+        izz="7.99950561201905E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/left_thigh_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/left_thigh_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lt2lh"
+    type="continuous">
+    <origin
+      xyz="0 0.0755 0"
+      rpy="0 0 0" />
+    <parent
+      link="left_hip_Link" />
+    <child
+      link="left_thigh_Link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="left_shank_Link">
+    <inertial>
+      <origin
+        xyz="3.33494609774387E-05 0.000114931303070276 -0.0865263868673867"
+        rpy="0 0 0" />
+      <mass
+        value="0.0467421397478218" />
+      <inertia
+        ixx="4.72408440442115E-05"
+        ixy="-3.28107886388918E-12"
+        ixz="4.62861079755493E-08"
+        iyy="4.93625689064605E-05"
+        iyz="2.33953592274232E-11"
+        izz="8.85160898820321E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/left_shank_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/left_shank_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="ls2lt"
+    type="continuous">
+    <origin
+      xyz="0 0 -0.2115"
+      rpy="0 0 0" />
+    <parent
+      link="left_thigh_Link" />
+    <child
+      link="left_shank_Link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="right_hip_Link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/right_hip_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/right_hip_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rh2base"
+    type="continuous">
+    <origin
+      xyz="0.0618 -0.05 -0.037"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_hip_Link" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="right_thigh_Link">
+    <inertial>
+      <origin
+        xyz="-0.00158569353944471 0.0229276866189404 -0.00517798853976459"
+        rpy="0 0 0" />
+      <mass
+        value="0.17662113738438" />
+      <inertia
+        ixx="8.87397458286816E-05"
+        ixy="-1.24465369787599E-06"
+        ixz="1.22401164437672E-07"
+        iyy="0.000154391897488749"
+        iyz="-1.97467490945701E-06"
+        izz="7.99950602073529E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/right_thigh_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/right_thigh_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rt2rh"
+    type="continuous">
+    <origin
+      xyz="0 -0.0755 0"
+      rpy="0 0 0" />
+    <parent
+      link="right_hip_Link" />
+    <child
+      link="right_thigh_Link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="right_shank_Link">
+    <inertial>
+      <origin
+        xyz="-3.33494612820839E-05 -0.000114931302097498 -0.0865263868649229"
+        rpy="0 0 0" />
+      <mass
+        value="0.0467421397491349" />
+      <inertia
+        ixx="4.7240844048065E-05"
+        ixy="-3.22593416992303E-12"
+        ixz="-4.62861066728474E-08"
+        iyy="4.93625689103045E-05"
+        iyz="-2.3394455320217E-11"
+        izz="8.85160898841615E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/right_shank_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Smart Bikeurdf/meshes/right_shank_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rs2rt"
+    type="continuous">
+    <origin
+      xyz="0 0 -0.2115"
+      rpy="0 0 0" />
+    <parent
+      link="right_thigh_Link" />
+    <child
+      link="right_shank_Link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+</robot>

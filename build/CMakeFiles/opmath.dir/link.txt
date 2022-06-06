@@ -1,0 +1,2 @@
+/usr/bin/ar qc libopmath.a  CMakeFiles/opmath.dir/src/opmath.cpp.o
+/usr/bin/ranlib libopmath.a
