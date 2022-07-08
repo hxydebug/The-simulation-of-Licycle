@@ -1,13 +1,8 @@
-raisim example
+This is a simulation project for wheel-leg bikebot crossing rugged terrain using Raisim
 ==========================
+![image](https://user-images.githubusercontent.com/35949664/177945253-c85bddab-4fe9-4963-aa85-35f7848fcc00.png)
 
-This repo is an example of a standalone RaiSim application. It requires RaiSim v1.0 from github.com/raisimTech/raisimlib
-
-
-how to build
---------------------------
-Assuming that you already have installed raisim,
-
-- Create the working directory: ``mkdir build && cd build``
-- Run cmake: ``cmake .. -DCMAKE_PREFIX_PATH=${LOCAL_INSTALL}``
-- Build: ``make``
+A model predictive control is designed for the leg assistive
+actuation to take advantage of the leg-ground interaction force
+and balance torque.
+![image](https://user-images.githubusercontent.com/35949664/177945287-9018f8e9-4cdd-49df-bbf9-908ab51f526e.png)
