@@ -775,6 +775,14 @@ iostream
 -
 fstream
 -
+stdio.h
+-
+stdlib.h
+-
+termios.h
+-
+unistd.h
+-
 
 /usr/include/eigen3/Eigen/Cholesky
 Core

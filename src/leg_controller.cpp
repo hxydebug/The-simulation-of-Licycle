@@ -319,13 +319,16 @@ Eigen::VectorXd leg_controller::get_action(int Run_mode){
 
     Eigen::VectorXd anglesV(6);
     anglesV.setConstant(0);
-    float error = 10+fabs(80*bike->get_varphi());
-    std::cout<<"error:"<<error<<std::endl;
+    float error = fabs(80*bike->get_varphi());
+    // std::cout<<"error:"<<error<<std::endl;
 
-    if(Run_mode==3){
+    if(Run_mode==8){
       pGain.setConstant(error);
     }
-    if(Run_mode==4){
+    if(Run_mode==3){
+      pGain.setConstant(30+error);
+    }
+    if(Run_mode==4){ //without pd
       pGain.setConstant(0);
     }
 

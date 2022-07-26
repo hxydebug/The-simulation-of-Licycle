@@ -28,6 +28,7 @@ double tire_omega = body_vr/body_R;
 double LIMIT_STEER = 30.0 * PI / 180.0;
 // double LIMIT_STEER = 5.0 * PI / 180.0;
 double new_Wt = -PI/2;
+double start_y = 0;
 double dt = 0.02;
 double Wt = 3.14;
 
@@ -95,6 +96,7 @@ Eigen::VectorXd bicycle_controller::get_action(int bike_mode, float velocity){
 	// bikebot.vr = velocity;
 	tire_omega = velocity/body_R;
 	dGain << 3, 4.5, 0.0;
+	int kbflag = 0;
 
 	bicycle_controller::stateUpdate();
 
@@ -109,12 +111,12 @@ Eigen::VectorXd bicycle_controller::get_action(int bike_mode, float velocity){
 		///no torque
 		p<< 0,0,0;
 		v<< 0,-tire_omega,0;
-		dGain<< 3, 0, 0.0;
+		dGain<< 3, 4.5, 0.0;
 	}
 	else if(bike_mode == 2){
 
 		///run the controller
-		bicycle_controller::balanceCalc1(1);
+		bicycle_controller::balanceCalc1(2,kbflag);
 		///get the control input
 		p<< -phi_cmd,0,0;
 		v<< 0,-tire_omega,0;
@@ -122,7 +124,7 @@ Eigen::VectorXd bicycle_controller::get_action(int bike_mode, float velocity){
 	else if(bike_mode == 3){
 
 		///run the controller circle
-		bicycle_controller::balanceCalc1(0);
+		bicycle_controller::balanceCalc1(0,kbflag);
 		///get the control input
 		p<< -phi_cmd,0,0;
 		v<< 0,-tire_omega,0;
@@ -130,13 +132,13 @@ Eigen::VectorXd bicycle_controller::get_action(int bike_mode, float velocity){
 	else if(bike_mode == 4){
 
 		///run the controller without eic
-		bicycle_controller::balanceCalc2(0);
+		bicycle_controller::balanceCalc2(1,kbflag);
 		///get the control input
 		p<< -phi_cmd,0,0;
 		v<< 0,-tire_omega,0;
 	}
 	else{
-		///run the controller with eic
+		///run the controller with eic, and record the torque error
 		bicycle_controller::balanceCalc3(1);
 		///get the control input
 		p<< -phi_cmd,0,0;
@@ -146,6 +148,76 @@ Eigen::VectorXd bicycle_controller::get_action(int bike_mode, float velocity){
 	return bicycle_controller::tau(bike->get_bicycle_pos(),bike->get_bicycle_vel(),p,v);
 	
 }
+
+Eigen::VectorXd bicycle_controller::get_action1(int bike_mode, float velocity, int kbflag){
+	
+	Eigen::VectorXd p(3),v(3);
+	// bikebot.vr = velocity;
+	tire_omega = velocity/body_R;
+	dGain << 3, 4.5, 0.0;
+
+	bicycle_controller::stateUpdate();
+
+	if(bike_mode == 0){
+
+		///get the control input
+		p<< 0,0,0;
+		v<< 0,-tire_omega,0;
+	}
+	else if(bike_mode == 1){
+
+		///no torque
+		if(kbflag == 1){
+			phi_cmd = -0.3;
+			// std::cout<<v_dye<<std::endl;
+		}
+		else if(kbflag == 2){
+			phi_cmd = 0.3;
+			// std::cout<<v_dye<<std::endl;
+		}
+		else{
+			phi_cmd = 0;
+		}
+		p<< -phi_cmd,0,0;
+		v<< 0,-tire_omega,0;
+		dGain<< 3, 4.5, 0.0;
+	}
+	else if(bike_mode == 2){
+
+		///run the controller
+		bicycle_controller::balanceCalc1(2,kbflag);
+		///get the control input
+		p<< -phi_cmd,0,0;
+		v<< 0,-tire_omega,0;
+	}
+	else if(bike_mode == 3){
+
+		///run the controller circle
+		bicycle_controller::balanceCalc1(0,kbflag);
+		///get the control input
+		p<< -phi_cmd,0,0;
+		v<< 0,-tire_omega,0;
+	}
+	else if(bike_mode == 4){
+
+		///run the controller without eic
+		bicycle_controller::balanceCalc2(2,kbflag);
+		///get the control input
+		p<< -phi_cmd,0,0;
+		v<< 0,-tire_omega,0;
+	}
+	else{
+		///run the controller with eic, and record the torque error
+		bicycle_controller::balanceCalc3(1);
+		///get the control input
+		p<< -phi_cmd,0,0;
+		v<< 0,-tire_omega,0;
+	}
+
+	return bicycle_controller::tau(bike->get_bicycle_pos(),bike->get_bicycle_vel(),p,v);
+	
+}
+
 Eigen::VectorXd bicycle_controller::tau(Eigen::VectorXd pA,Eigen::VectorXd vA,Eigen::VectorXd pT,Eigen::VectorXd vT){
 //   Eigen::VectorXd vTarget = vT;
 //   Eigen::VectorXd vActual = vA;
@@ -336,7 +408,7 @@ void bicycle_controller::balanceCalc(){
 
 }
 
-void bicycle_controller::balanceCalc1(int traj){
+void bicycle_controller::balanceCalc1(int traj, int kbflag){
 	/*变量读取*/
 	double vr = bikebot.vr;		double dvr = 0;
 	double psi = bikebot.psi;
@@ -349,21 +421,45 @@ void bicycle_controller::balanceCalc1(int traj){
 	/*trajectory*/
 	// // 走圆	
 	if(traj==0){
-		double cr = 1.5; double w = ve/cr;
+		double cr = 3.5; double w = ve/cr;
 		double x_offset = 0; double y_offset = cr;
 		new_Wt += w*dt; 
 		xe = x_offset + cr * cos(new_Wt); 	ye =  y_offset + cr*sin(new_Wt);
 		dxe = -cr * sin(new_Wt) * w;		dye = cr * cos(new_Wt) * w;	
-		ddxe = -dye * w; 		 ddye = dxe * w;
-		dddxe = -ddye * w; 		 dddye = ddxe * w;
-		ddddxe = -dddye * w; 	 ddddye = dddxe * w;
-		dddddxe = -ddddye * w; 	 dddddye = ddddxe * w;
+		// ddxe = -dye * w; 		 ddye = dxe * w;
+		// dddxe = -ddye * w; 		 dddye = ddxe * w;
+		// ddddxe = -dddye * w; 	 ddddye = dddxe * w;
+		// dddddxe = -ddddye * w; 	 dddddye = ddddxe * w;
 	}
 	//走直线
-	else{
+	else if(traj==1){
 		dxe = ve; dye = 0; 
 		xe += ve*dt; ye = 0;
 	}
+	else{
+		double v_dye = 0;
+		if(kbflag == 1){
+			v_dye = -0.3;
+			// std::cout<<v_dye<<std::endl;
+		}
+		else if(kbflag == 2){
+			v_dye = 0.3;
+			// std::cout<<v_dye<<std::endl;
+		}
+		else{
+			v_dye = 0;
+		}
+		
+		//virtual angle
+		// dxe = ve*cos(psi+v_dye);
+		// dye = ve*sin(psi+v_dye);
+
+		//virtual postion
+		dxe = ve*cos(psi)-v_dye*sin(psi);
+		dye = ve*sin(psi)+v_dye*cos(psi);
+
+		xe += dxe*dt; ye += dye*dt;
+	}//走任意曲线
 	
 
 	bikebot.xe = xe;
@@ -437,7 +533,7 @@ void bicycle_controller::balanceCalc1(int traj){
 	bikebot.last_target = phi_cmd;
 }
 // external control
-void bicycle_controller::balanceCalc2(int traj){
+void bicycle_controller::balanceCalc2(int traj,int kbflag){
 	/*变量读取*/
 	double vr = bikebot.vr;		double dvr = 0;
 	double psi = bikebot.psi;
@@ -467,10 +563,34 @@ void bicycle_controller::balanceCalc2(int traj){
 
 	}
 	//走直线
-	else{
+	else if(traj==1){
 		dxe = ve; dye = 0; 
 		xe += ve*dt; ye = 0;
 	}
+	else{
+		double v_dye = 0;
+		if(kbflag == 1){
+			v_dye = -0.3;
+			// std::cout<<v_dye<<std::endl;
+		}
+		else if(kbflag == 2){
+			v_dye = 0.3;
+			// std::cout<<v_dye<<std::endl;
+		}
+		else{
+			v_dye = 0;
+		}
+		
+		//virtual angle
+		// dxe = ve*cos(psi+v_dye);
+		// dye = ve*sin(psi+v_dye);
+
+		//virtual postion
+		dxe = ve*cos(psi)-v_dye*sin(psi);
+		dye = ve*sin(psi)+v_dye*cos(psi);
+
+		xe += dxe*dt; ye += dye*dt;
+	}//走任意曲线
 	
 
 	bikebot.xe = xe;

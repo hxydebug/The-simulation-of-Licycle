@@ -4,14 +4,77 @@
 #include "model.h"
 #include "swing_leg_controller.h"
 #include "stance_leg_controller.h"
-
 #include <iostream>
 #include <fstream>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+// #include <term.h>
+// #include <curses.h>
+#include <unistd.h>
+static struct termios initial_settings, new_settings;
+static int peek_character = -1;
+void init_keyboard(); 
+void close_keyboard() ;
+int kbhit() ;
+int readch();
+
 int counttt=20;
 char ch[64] = {0};
+int kbflag = 0;
+int kbmode = 1;
+
+void init_keyboard (){
+	tcgetattr (0,&initial_settings) ;
+	new_settings = initial_settings ;
+	new_settings.c_lflag &= ~ ICANON;
+	new_settings.c_lflag &= ~ ECHO;
+	new_settings.c_lflag &= ~ ISIG;
+	new_settings.c_cc [VMIN] = 1;
+	new_settings.c_cc [VTIME] = 0;
+	tcsetattr(0, TCSANOW, &new_settings) ;
+}
+void close_keyboard()
+{
+tcsetattr(0, TCSANOW, &initial_settings) ;
+}
+//下面就是检测是否有击键动作的kbhit函数:
+int kbhit ()
+{
+	char ch;
+	int nread;
+	if (peek_character != -1)
+		return 1;
+	new_settings.c_cc[VMIN]=0;
+	tcsetattr(0,TCSANOW, &new_settings) ;
+	nread = read(0,&ch,1) ;
+	new_settings.c_cc[VMIN] = 1;
+	tcsetattr(0, TCSANOW, &new_settings) ;
+	if (nread == 1) {
+		peek_character = ch;
+		return 1;
+	}
+	return 0;
+}
+ 
+//按键对应的字符由下-一个函数readch读取，它会将变量peek_ character重置为-1以进入下一次循环。
+ 
+int readch()
+{
+	char ch;
+	if(peek_character != -1) {
+		ch = peek_character;
+		peek_character = -1;
+		return ch;
+	}
+	read(0,&ch,1) ;
+	return ch;
+}
 
 int main(int argc, char* argv[]) {
+
+  init_keyboard() ;
   auto binaryPath = raisim::Path::setFromArgv(argv[0]);
 
   /// create raisim world
@@ -19,7 +82,7 @@ int main(int argc, char* argv[]) {
   raisim::World world;
   auto smart_bycicle = world.addArticulatedSystem(binaryPath.getDirectory() + "\\rsc\\licycle_urdfnew\\urdf\\licycle_urdf.urdf");
  
-  // auto ground = world.addGround(0,"steel");
+  auto ground = world.addGround(0,"steel");
 
   // raisim::TerrainProperties terrainProperties;
   // terrainProperties.frequency = 0.4;
@@ -60,10 +123,10 @@ int main(int argc, char* argv[]) {
   // auto hm = world.addHeightMap("/home/hxy/raisim_workspace/legs/src/rugged_terrain.txt", 4, 0);
   // auto hm = world.addHeightMap("/home/hxy/raisim_workspace/legs/src/door.txt", 4, 4);
   // auto hm = world.addHeightMap("/home/hxy/raisim_workspace/legs/src/afile.txt", 9, 0,"steel");
-  auto hm = world.addHeightMap("/home/hxy/raisim_workspace/legs/src/bfile10.txt", 2.5, 2,"steel");
+  // auto hm = world.addHeightMap("/home/hxy/raisim_workspace/legs/src/bfile10.txt", 2.5, 2,"steel");
 
 
-  // world.setMaterialPairProp("steel", "rubber", 0.45, 0.15, 0.001);
+  world.setMaterialPairProp("steel", "rubber", 0.45, 0.15, 0.001);
 
   world.setTimeStep(0.001);
 
@@ -92,6 +155,8 @@ int main(int argc, char* argv[]) {
   Eigen::VectorXd bicycle_tau;
   Eigen::VectorXd leg_tau;
   float global_timer = 0;
+
+  float desire_v = 0;
   
   while(1){
     raisim::MSLEEP(1);
@@ -106,6 +171,70 @@ int main(int argc, char* argv[]) {
       counttt ++;
       leg_tau = l_control.get_action(0);
     }
+
+
+    // //back
+    //   float desire_v = -0.8;
+    //   swc.desired_xspeed = desire_v;
+    //   stc.desired_xspeed = desire_v;
+    //   if(counttt==20){
+    //     bicycle_tau = b_control.get_action(1,desire_v);
+    //     counttt=1;
+    //   }
+    //   counttt ++;
+    //   auto leg_tau = l_control.get_action(3);
+
+    // //ready
+    //   float desire_v = 0;
+    //   swc.desired_xspeed = desire_v;
+    //   stc.desired_xspeed = desire_v;
+    //   if(counttt==20){
+    //     bicycle_tau = b_control.get_action(1,desire_v);
+    //     counttt=1;
+    //   }
+    //   counttt ++;
+    //   leg_tau = l_control.get_action(3);
+
+    // //speed up
+    //   float desire_v = 0.5;
+    //   swc.desired_xspeed = desire_v;
+    //   stc.desired_xspeed = desire_v;
+    //   // stc.desired_roll = -5*PI/180;
+    //   if(counttt==20){
+    //     bicycle_tau = b_control.get_action(0,desire_v);
+    //     counttt=1;
+    //   }
+    //   counttt ++;
+    //   leg_tau = l_control.get_action(3);
+
+    // //without eic
+    //   float desire_v = 0.5;
+    //   swc.desired_xspeed = desire_v;
+    //   stc.desired_xspeed = desire_v;
+    //   // stc.desired_roll = -5*PI/180;
+    //   if(counttt==20){
+    //     bicycle_tau = b_control.get_action(4,desire_v);
+    //     counttt=1;
+    //   }
+    //   stc.h_varphi = b_control.get_h_varphi();
+    //   stc.desired_roll = b_control.get_varphie();
+    //   counttt ++;
+    //   leg_tau = l_control.get_action(3);
+
+    // //rugged road
+    // float desire_v = 1.2;
+    // swc.desired_xspeed = desire_v;
+    // stc.desired_xspeed = desire_v;
+    // // stc.desired_roll = -5*PI/180;
+    // if(counttt==20){
+    //   bicycle_tau = b_control.get_action(5,desire_v);
+    //   counttt=1;
+    // }
+    // stc.h_varphi = b_control.get_h_varphi();
+    // // stc.desired_roll = b_control.get_varphie();
+    // counttt ++;
+    // leg_tau = l_control.get_action(4);
+
     // else if(global_timer<2){
     //   // //back
     //   // float desire_v = -0.8;
@@ -117,7 +246,6 @@ int main(int argc, char* argv[]) {
     //   // }
     //   // counttt ++;
     //   // auto leg_tau = l_control.get_action(3);
-
     //   //ready
     //   float desire_v = 0;
     //   swc.desired_xspeed = desire_v;
@@ -142,22 +270,21 @@ int main(int argc, char* argv[]) {
     //   counttt ++;
     //   leg_tau = l_control.get_action(3);
     // }
-
     // door
-    else if(global_timer<180){
-      float desire_v = 0.5;
-      swc.desired_xspeed = desire_v;
-      stc.desired_xspeed = desire_v;
-      // stc.desired_roll = -5*PI/180;
-      if(counttt==20){
-        bicycle_tau = b_control.get_action(4,desire_v);
-        counttt=1;
-      }
-      stc.h_varphi = b_control.get_h_varphi();
-      stc.desired_roll = b_control.get_varphie();
-      counttt ++;
-      leg_tau = l_control.get_action(3);
-    }
+    // else if(global_timer<180){
+    //   float desire_v = 0.5;
+    //   swc.desired_xspeed = desire_v;
+    //   stc.desired_xspeed = desire_v;
+    //   // stc.desired_roll = -5*PI/180;
+    //   if(counttt==20){
+    //     bicycle_tau = b_control.get_action(4,desire_v);
+    //     counttt=1;
+    //   }
+    //   stc.h_varphi = b_control.get_h_varphi();
+    //   stc.desired_roll = b_control.get_varphie();
+    //   counttt ++;
+    //   leg_tau = l_control.get_action(3);
+    // }
     // else if(global_timer<180){
     //   float desire_v = 0.5;
     //   swc.desired_xspeed = desire_v;
@@ -170,8 +297,6 @@ int main(int argc, char* argv[]) {
     //   counttt ++;
     //   leg_tau = l_control.get_action(5);
     // }
-
-
     // rugged terrain
     // else if(global_timer<180){
     //   if(b_control.get_xdistance()<3.5){
@@ -226,7 +351,6 @@ int main(int argc, char* argv[]) {
     //     leg_tau = l_control.get_action(5);
     //   }
     // }
-
     // else if(global_timer<18){
     //   float desire_v = 1.2;
     //   swc.desired_xspeed = desire_v;
@@ -240,17 +364,123 @@ int main(int argc, char* argv[]) {
     //   leg_tau = l_control.get_action(5);
     // }
     else{
-      float desire_v = 1.1;
-      swc.desired_xspeed = desire_v;
-      stc.desired_xspeed = desire_v;
-      // stc.desired_roll = -5*PI/180;
-      if(counttt==20){
-        bicycle_tau = b_control.get_action(2,desire_v);
-        counttt=1;
+
+      if(kbhit()){
+        int k = readch();
+        std::cout<<k<<"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"<<std::endl;
+        // direction
+        if(k == 119) kbflag = 0;//w forward
+        if(k == 100) kbflag = 1;//d right
+        if(k == 97) kbflag = 2;//a left
+        // mode
+        if(k == 103) kbmode = 0;//g (without leg)
+        if(k == 115) kbmode = 1;//s stop
+        if(k == 98) kbmode = 2;//b back     2
+        if(k == 114) kbmode = 3;//r ready
+        if(k == 108) kbmode = 4;//l slow(without eic)     2
+        if(k == 111) kbmode = 5;//o rugged road     2
+        if(k == 107) kbmode = 6;//k slow(without eic)  decrease the pd
       }
-      counttt ++;
-      leg_tau = l_control.get_action(4);
+
+      // std::cout<<kbmode<<std::endl;
+      close_keyboard();
+
+      switch(kbmode){
+        case 0:
+          desire_v = 1.2;
+          swc.desired_xspeed = desire_v;
+          stc.desired_xspeed = desire_v;
+          // stc.desired_roll = -5*PI/180;
+          if(counttt==20){
+            bicycle_tau = b_control.get_action1(2,desire_v,kbflag);
+            counttt=1;
+          }
+          counttt ++;
+          leg_tau = l_control.get_action(5);
+          break;
+
+        case 1:
+          if(counttt==20){
+            bicycle_tau = b_control.get_action(1,0);
+            counttt=1;
+          }
+          counttt ++;
+          leg_tau = l_control.get_action(0);
+          break;
+
+        case 2:
+          desire_v = -0.8;
+          swc.desired_xspeed = desire_v;
+          stc.desired_xspeed = desire_v;
+          if(counttt==20){
+            bicycle_tau = b_control.get_action1(1,desire_v,kbflag);
+            counttt=1;
+          }
+          counttt ++;
+          leg_tau = l_control.get_action(3);
+          break;
+
+        case 3:
+          desire_v = 0;
+          swc.desired_xspeed = desire_v;
+          stc.desired_xspeed = desire_v;
+          if(counttt==20){
+            bicycle_tau = b_control.get_action(1,desire_v);
+            counttt=1;
+          }
+          counttt ++;
+          leg_tau = l_control.get_action(3);
+          break;
+
+        case 4:
+          desire_v = 0.5;
+          swc.desired_xspeed = desire_v;
+          stc.desired_xspeed = desire_v;
+          // stc.desired_roll = -5*PI/180;
+          if(counttt==20){
+            bicycle_tau = b_control.get_action1(4,desire_v,kbflag);
+            counttt=1;
+          }
+          // stc.h_varphi = b_control.get_h_varphi();
+          // stc.desired_roll = b_control.get_varphie();
+          counttt ++;
+          leg_tau = l_control.get_action(3);
+          break;
+
+        case 5:
+          desire_v = 1.2;
+          swc.desired_xspeed = desire_v;
+          stc.desired_xspeed = desire_v;
+          // stc.desired_roll = -5*PI/180;
+          if(counttt==20){
+            bicycle_tau = b_control.get_action1(2,desire_v,kbflag);
+            counttt=1;
+          }
+          // stc.h_varphi = b_control.get_h_varphi();
+          // stc.desired_roll = b_control.get_varphie();
+          counttt ++;
+          leg_tau = l_control.get_action(4);
+          break;
+
+        case 6:
+          desire_v = 0.5;
+          swc.desired_xspeed = desire_v;
+          stc.desired_xspeed = desire_v;
+          // stc.desired_roll = -5*PI/180;
+          if(counttt==20){
+            bicycle_tau = b_control.get_action(4,desire_v);
+            counttt=1;
+          }
+          // stc.h_varphi = b_control.get_h_varphi();
+          // stc.desired_roll = b_control.get_varphie();
+          counttt ++;
+          leg_tau = l_control.get_action(8);
+          break;
+
+      }
     }
+
+
 
     int stance = gait_gen.leg_state[0];
 

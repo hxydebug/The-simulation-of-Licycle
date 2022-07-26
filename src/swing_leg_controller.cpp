@@ -65,7 +65,7 @@ Eigen::VectorXd swing_leg_controller::get_action(void){
                                 (target_hip_horizontal_velocity - hip_horizontal_velocity) - _desired_height 
                                 + hip_positions[i];
     // foot_target_position[0]=0.2;
-    std::cout<<foot_target_position[0]<<std::endl;
+    // std::cout<<foot_target_position[0]<<std::endl;
     Position end_position;
     end_position.x = foot_target_position[0];
     end_position.y = foot_target_position[1];

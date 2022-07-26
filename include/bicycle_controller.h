@@ -43,9 +43,10 @@ public:
 	void initial_param();
 	Eigen::VectorXd tau(Eigen::VectorXd pA,Eigen::VectorXd vA,Eigen::VectorXd pT,Eigen::VectorXd vT);
 	Eigen::VectorXd get_action(int bike_mode, float velocity);
+	Eigen::VectorXd get_action1(int bike_mode, float velocity, int kbflag);
 	void balanceCalc();
-	void balanceCalc1(int traj);
-	void balanceCalc2(int traj);
+	void balanceCalc1(int traj, int kbflag);
+	void balanceCalc2(int traj, int kbflag);
 	void balanceCalc3(int traj);
 	void balance();
 	void stateUpdate();
