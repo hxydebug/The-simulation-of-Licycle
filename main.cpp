@@ -367,7 +367,7 @@ int main(int argc, char* argv[]) {
 
       if(kbhit()){
         int k = readch();
-        std::cout<<k<<"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"<<std::endl;
+        // std::cout<<k<<"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"<<std::endl;
         // direction
         if(k == 119) kbflag = 0;//w forward
         if(k == 100) kbflag = 1;//d right
