@@ -27,6 +27,6 @@ First generate the 3D model of bikebot by solidworks and then use algorithm to c
 
 <img src="https://user-images.githubusercontent.com/35949664/180995867-0e63222a-d377-466a-8fa0-fbfe32b1369e.png" width="500" /><br/> 
 
-Finally we create rugged terrain with the height of the topography varies as a function of the xy coordinate as ℎ=|0.07sin(7𝑥)−0.07cos(4𝑦+2)| m.
+Finally we create rugged terrain with the height as a function of the xy coordinate as ℎ=|0.07sin(7𝑥)−0.07cos(4𝑦+2)| m.
 
 <img src="https://user-images.githubusercontent.com/35949664/177945929-40849e89-40bb-4c1d-a30c-74fcec280bb1.png" width="500" /><br/>
