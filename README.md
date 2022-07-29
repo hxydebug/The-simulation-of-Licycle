@@ -2,7 +2,7 @@ This is a simulation project for wheel-leg bikebot crossing rugged terrain using
 ==========================
 #### Introduction
 Bicycle robot has high-speed and high-energy efficiency on off-road terrains, but is unable to keep balance at low speed and run on uneven terrain.
-So we design a wheel-leg hybrid bikebot control system to provide assistive torque to balance the bikebot at low speed or off-road terrain conditions.
+So we design a wheel-leg hybrid control strategy to provide assistive torque to balance the bikebot at low speed or off-road terrain conditions.
 
 A model predictive control is designed for the leg assistive
 actuation to take advantage of the leg-ground interaction force
